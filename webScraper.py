@@ -1,5 +1,6 @@
 # write a web scraper that will scrape the following website: 
 # This is a web scraping python project where the html is collected from a website. The Html is then used to create an Html document. All links in the main website provided are also scraped and html files created with their page titles as the names
+import os
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 # Making a GET request
@@ -28,10 +29,12 @@ def scrapeWebsite(url):
   
 # function to save html content to a html file
 def saveHTML(htmlContent, fileName):
-  with open(fileName+'.html', 'w', encoding='utf-8') as f:
+  directory = 'html'
+  if not os.path.exists(directory):
+   os.makedirs(directory)
+  filePath = os.path.join(directory, fileName + '.html')
+  with open(filePath, 'w', encoding='utf-8') as f:
     f.write(f'''{htmlContent}''')
-    f.close()
-#
 websiteSoup =  BeautifulSoup(scrapeWebsite('https://www.classcentral.com'), "html.parser")
 if websiteSoup.title.string:
   saveHTML(websiteSoup.prettify(), websiteSoup.title.string)
