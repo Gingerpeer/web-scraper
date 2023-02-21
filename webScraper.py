@@ -22,9 +22,11 @@ def saveHTML(htmlContent, fileName):
 
 websiteSoup = BeautifulSoup(scrapeWebsite('https://www.geeksforgeeks.org/python-programming-language/'), "html.parser")
 saveHTML(websiteSoup.prettify(), websiteSoup.title.string)
-aTags = websiteSoup.find_all('a')
-for tag in aTags:
-    print(tag.get('href'))
+aTags = websiteSoup.find_all('a', href=True)
+amountOfLinks = len(aTags)
+print(f"There are {amountOfLinks} links on this page")
+# for tag in aTags:
+#     print(tag.get('href'))
 
 # # check status code for response received
 # # success code - 200
