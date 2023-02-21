@@ -37,12 +37,20 @@ if websiteSoup.title.string:
   saveHTML(websiteSoup.prettify(), websiteSoup.title.string)
 else:
   saveHTML(websiteSoup.prettify(), "NoTitle")
-# aTags = websiteSoup.find_all('a', href=True)
+aTags = websiteSoup.find_all('a', href=True)
 # amountOfLinks = len(aTags)
 # print(f"There are {amountOfLinks} links on this page")
-# for tag in aTags:
-#     print(tag.get('href'))
-
+count = 0
+for tag in aTags:
+  if(tag.get('href').startswith('https://www.')):
+    count = count + 1
+    print(tag.get('href'))
+    data = BeautifulSoup(scrapeWebsite(tag.get('href')), "html.parser")
+    if data.title.string:
+      saveHTML(data.prettify(), data.title.string)
+    else:
+      saveHTML(data.prettify(), "NoTitle")
+print(count)
 # # check status code for response received
 # # success code - 200
 # print(type(r))
