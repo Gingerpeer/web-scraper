@@ -108,7 +108,6 @@ aTags = websiteSoup.find_all('a', href=True)
 # print(f"There are {amountOfLinks} links on this page")
 for tag in aTags:
   if(tag.get('href').startswith('https://')):
-    count = count + 1
     print(tag.get('href'))
     data = BeautifulSoup(scrapeWebsite(tag.get('href')), "html.parser")
     pTags = data.find_all('p')
