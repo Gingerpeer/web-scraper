@@ -94,8 +94,8 @@ def saveHTML(htmlContent, fileName):
   with open(filePath, 'w', encoding='utf-8') as f:
     f.write(f'''{htmlContent}''')
     
-# url = input("Enter the URL of the website to scrape: ")
-websiteSoup =  BeautifulSoup(scrapeWebsite('https://www.classcentral.com/'), "html.parser")
+url = input("Enter the URL without 'https://' of the website to scrape: ")
+websiteSoup =  BeautifulSoup(scrapeWebsite('https://'+ url), "html.parser")
 
 if websiteSoup.title.string:
   titleTranslated = websiteSoup.title.string
