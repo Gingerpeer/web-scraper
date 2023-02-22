@@ -53,20 +53,38 @@ def scrapeWebsite(url):
   except:
       return "Error: Status code is not 200"
 # function to translate html content to hindi
+# def translateHTML(htmlContent):
+#     # Extract the text content from the HTML
+#     soup = BeautifulSoup(htmlContent, 'html.parser')
+
+#     for item in soup.find_all(string=True):
+#         originalText = item.strip()
+#         translatedText = translate_text('hi', originalText)
+#         item.replace_with(translatedText)
+
+#     print(str(soup))
 def translateHTML(htmlContent):
     # Extract the text content from the HTML
-    textContent = htmlContent 
-    BeautifulSoup(htmlContent, 'html.parser').get_text()
+    soup = BeautifulSoup(htmlContent, 'html.parser')
+    
+    
+    for item in soup:
+      item.text.replace(item.text,translate_text('hi', item.text))
+    #   print(item)
+        # textContent = item
+        # # Translate the text content
+        # translatedText = 
+        # # Replace the text content with the translated text
+        # item.replace_with(translatedText)
 
-    # Translate the text content to Hindi
-    translatedText = translate_text('hi', textContent)
+    # print(str(soup))
+    return soup
 
-    # Insert the translated text back into the HTML
-    translatedHTML = htmlContent.replace(textContent, translatedText)
-
-    return translatedHTML
-
-
+def change_all_text(html_doc, new_text):
+    soup = BeautifulSoup(html_doc, 'html.parser')
+    for item in soup.find_all(text=True):
+        item.replace_with(new_text)
+    return str(soup)
 # function to save html content to a html file
 def saveHTML(htmlContent, fileName):
   directory = 'html'
@@ -78,15 +96,16 @@ def saveHTML(htmlContent, fileName):
     
 # url = input("Enter the URL of the website to scrape: ")
 websiteSoup =  BeautifulSoup(scrapeWebsite('https://www.classcentral.com/'), "html.parser")
+
 if websiteSoup.title.string:
-  titleTranslated = translate_text('hi', websiteSoup.title.string)
+  titleTranslated = websiteSoup.title.string
+  # translate_text('hi', websiteSoup.title.string)
   saveHTML(websiteSoup.prettify(), titleTranslated)
 else:
-  saveHTML(websiteSoup.prettify(), "NoTitle")
+  saveHTML(websiteSoup.prettify(), 'No Title')
 aTags = websiteSoup.find_all('a', href=True)
 # amountOfLinks = len(aTags)
 # print(f"There are {amountOfLinks} links on this page")
-count = 0
 for tag in aTags:
   if(tag.get('href').startswith('https://')):
     count = count + 1
@@ -94,12 +113,11 @@ for tag in aTags:
     data = BeautifulSoup(scrapeWebsite(tag.get('href')), "html.parser")
     pTags = data.find_all('p')
     if data.title.string:
-      translatedTitle = translate_text('hi', data.title.string)
-      
+      translatedTitle = data.title.string
+      # translate_text('hi', data.title.string)
       saveHTML(data.prettify(),translatedTitle)
     else:
       saveHTML(data.prettify(), "NoTitle")
-print(count)
 # # check status code for response received
 # # success code - 200
 # print(type(r))
